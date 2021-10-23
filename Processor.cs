@@ -21,7 +21,7 @@ namespace LunarCrushGet
             //link leads to a JSON and not error 403 so it exists
             Console.WriteLine($"General API connection test: {RemoteFileExists("https://api.sunrise-sunset.org/json?lat=41.494804&lng=-75.536852&date=today")} ");
             //check connection to detect a website that's known to be up and running
-            Console.WriteLine($"Website API connection test: {RemoteFileExists("https://legacy.lunarcrush.com/developers/docs")} ");
+            Console.WriteLine($"Lunarcrush Website API connection test: {RemoteFileExists("https://legacy.lunarcrush.com/developers/docs")} ");
             //check connection to lunarcrush in general
             Console.WriteLine($"Specific API connection test: {RemoteFileExists(url)} ");
             //check connection to the url we actually want

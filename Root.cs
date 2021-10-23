@@ -17,20 +17,79 @@ namespace LunarCrushGet
         public static async void print()
         {
             var info = await Processor.LoadInformation();
-            Console.WriteLine("Info:\n");
-            foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(info))
+
+            if (info.GetType().Name == "Root")
             {
-                try
+                Console.WriteLine("\nConfig");
+                foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(info.config))
                 {
-                    string name = descriptor.Name;
-                    object value = descriptor.GetValue(info);
-                    Console.WriteLine("{0}={1}", name, value);
+                    try
+                    {
+                        string name = descriptor.Name;
+                        object value = descriptor.GetValue(info.config);
+                        Console.WriteLine("{0}={1}", name, value);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                    }
                 }
-                catch (Exception e)
+                Console.WriteLine("\nUsage");
+                foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(info.usage))
                 {
-                    Console.WriteLine(e);
+                    try
+                    {
+                        string name = descriptor.Name;
+                        object value = descriptor.GetValue(info.usage);
+                        Console.WriteLine("{0}={1}", name, value);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                    }
+                }
+                Console.WriteLine("\nData");
+
+                foreach (var item in info.data)
+                {
+                    foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(item))
+                    {
+                        try
+                        {
+                            string name = descriptor.Name;
+                            if (name != "timeSeries")
+                            {
+                                object value = descriptor.GetValue(item);
+                                Console.WriteLine("{0}={1}", name, value);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e);
+                        }
+
+
+                    }
+                }
+            }else
+            {
+                Console.WriteLine("Info:\n");
+                foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(info))
+                {
+                    try
+                    {
+                        string name = descriptor.Name;
+                        object value = descriptor.GetValue(info);
+                        Console.WriteLine("{0}={1}", name, value);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                    }
                 }
             }
+            
+
         }
     }
 

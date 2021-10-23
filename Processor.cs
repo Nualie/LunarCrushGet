@@ -12,12 +12,27 @@ namespace LunarCrushGet
     {
         public static async Task<Root> LoadInformation()
         {
-            string url = "https://api.lunarcrush.com/v2?data=assets&key=usd1pm5mhrtjoqcn6asxa&symbol=LTC&data_points=1";
+            string key = "1s3ffsn09fkmkuj6p6bnif";
+            string url = $"https://api.lunarcrush.com/v2?data=assets&key="+key+"&symbol=LTC&data_points=1";
+
+            Console.WriteLine("Trying to access:\n"+url);
+
+            //https://api.lunarcrush.com/v2?data=assets&key=1s3ffsn09fkmkuj6p6bnif&symbol=LTC&data_points=1
+            //link leads to a JSON and not error 403 so it exists
             Console.WriteLine($"General API connection test: {RemoteFileExists("https://api.sunrise-sunset.org/json?lat=41.494804&lng=-75.536852&date=today")} ");
+            //check connection to detect a website that's known to be up and running
+            Console.WriteLine($"Website API connection test: {RemoteFileExists("https://legacy.lunarcrush.com/developers/docs")} ");
+            //check connection to lunarcrush in general
+            Console.WriteLine($"Specific API connection test: {RemoteFileExists(url)} ");
+            //check connection to the url we actually want
+
+            //code has failed over and over because of what seems to be an auth problem although it works on browser fine
             try
             {
                 using (HttpResponseMessage response = await ApiHelper.ApiClient.GetAsync(url))
                 {
+
+                    Console.WriteLine("Status code: " + response.StatusCode);
                     if (response.IsSuccessStatusCode)
                     {
                         Root result = await response.Content.ReadAsAsync<Root>();
@@ -26,6 +41,7 @@ namespace LunarCrushGet
                     }
                     else
                     {
+                        Console.WriteLine("Status code: " + response.StatusCode);
                         throw new Exception(response.ReasonPhrase);
                     }
                 }
@@ -49,13 +65,14 @@ namespace LunarCrushGet
                 request.Method = "HEAD";
                 //Getting the Web Response.
                 HttpWebResponse response = request.GetResponse() as HttpWebResponse;
+                Console.WriteLine("Status code: "+response.StatusCode);
                 //Returns TRUE if the Status code == 200
-                response.Close();
                 return (response.StatusCode == HttpStatusCode.OK);
             }
-            catch
+            catch(Exception e)
             {
                 //Any exception will returns false.
+                Console.WriteLine(e);
                 return false;
             }
 

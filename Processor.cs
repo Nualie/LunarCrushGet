@@ -12,24 +12,30 @@ namespace LunarCrushGet
     {
         public static async Task<Root> LoadInformation()
         {
-            string key = "1s3ffsn09fkmkuj6p6bnif";
+            string key = "zfywgqd3a09ut8v0jd2d9c";
             string url = $"https://api.lunarcrush.com/v2?data=assets&key="+key+"&symbol=LTC&data_points=1";
 
             Console.WriteLine("Trying to access:\n"+url);
 
-            //https://api.lunarcrush.com/v2?data=assets&key=1s3ffsn09fkmkuj6p6bnif&symbol=LTC&data_points=1
+            //https://api.lunarcrush.com/v2?data=assets&key=zfywgqd3a09ut8v0jd2d9c&symbol=LTC&data_points=1
             //link leads to a JSON and not error 403 so it exists
             Console.WriteLine($"General API connection test: {RemoteFileExists("https://api.sunrise-sunset.org/json?lat=41.494804&lng=-75.536852&date=today")} ");
             //check connection to detect a website that's known to be up and running
             Console.WriteLine($"Lunarcrush Website API connection test: {RemoteFileExists("https://legacy.lunarcrush.com/developers/docs")} ");
             //check connection to lunarcrush in general
-            Console.WriteLine($"Specific API connection test: {RemoteFileExists(url)} ");
+            Console.WriteLine($"Specific API connection test:");
+            while (!RemoteFileExists(url))
+            {
+
+            }
+            //Console.WriteLine($"Specific API connection test: {RemoteFileExists(url)} ");
             //check connection to the url we actually want
 
             //code has failed over and over because of what seems to be an auth problem although it works on browser fine
             try
             {
-                using (HttpResponseMessage response = await ApiHelper.ApiClient.GetAsync(url))
+                ApiHelper help = new ApiHelper();
+                using (HttpResponseMessage response = await help.ApiClient.GetAsync(url))
                 {
 
                     Console.WriteLine("Status code: " + response.StatusCode);

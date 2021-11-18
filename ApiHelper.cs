@@ -8,11 +8,16 @@ using System.Threading.Tasks;
 
 namespace LunarCrushGet
 {
-    public static class ApiHelper
+    public class ApiHelper
     {
-        public static HttpClient ApiClient { get; set; }
+        public HttpClient ApiClient { get; set; }
 
-        public static void InitializeClient()
+        public ApiHelper()
+        {
+            InitializeClient();
+        }
+
+        public void InitializeClient()
         {
             ApiClient = new HttpClient();
             ApiClient.DefaultRequestHeaders.Accept.Clear();
